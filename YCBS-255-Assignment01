@@ -55,8 +55,8 @@ print(predicting(18))
 #print scatter plot and linear regression Income vs Education 
 plt.plot(income2.Income , income2.Education , 'or')
 plt.plot(income2.Income, lr.intercept_+lr.coef_*income2.Income,"-b")
-plt.xlabel('Income')
-plt.ylabel('Education')
+plt.ylabel('Income')
+plt.xlabel('Education')
 
 #multiple linear regression
 lr.fit(X =income2[['Education','Seniority']],y =income2['Income'])
