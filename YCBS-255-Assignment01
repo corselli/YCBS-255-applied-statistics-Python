@@ -1,0 +1,77 @@
+import pandas as pd
+import numpy as np
+import pandas as pd
+from pylab import rcParams
+import seaborn as sb 
+from sklearn.preprocessing import scale
+from collections import Counter
+
+#Creating path and reading the file
+path ="C:/Users/corselli/Downloads/"
+file="Income2.csv"
+filename=path + file
+
+print(filename)
+
+income2=pd.read_csv(filename)
+
+print(income2)
+
+#Correletion set of data
+np.corrcoef(income2)
+
+#printing some graphics
+%matplotlib inline
+rcParams['figure.figsize'] = 5,4
+sb.set_style('whitegrid')
+
+#Printing correlation
+sb.pairplot(income2)
+
+
+#printing
+import matplotlib.pyplot as plt
+%matplotlib inline
+plt.plot(income2.Education , income2.Income, 'or', mfc='none')
+
+#Linear regression
+from sklearn.linear_model import LinearRegression
+lr = LinearRegression() 
+
+lr.fit(X = income2[['Income']], y = income2["Education"])
+
+print(lr.score(X = income2[['Education']], y = income2["Income"]))
+
+print(lr.intercept_ , lr.coef_)
+
+#predict age 18
+
+def predicting (x):
+	y=lr.intercept_+x*lr.coef_
+	return y
+
+print(predicting(18))
+
+#print scatter plot and linear regression Income vs Education 
+plt.plot(income2.Income , income2.Education , 'or')
+plt.plot(income2.Income, lr.intercept_+lr.coef_*income2.Income,"-b")
+plt.xlabel('Income')
+plt.ylabel('Education')
+
+#multiple linear regression
+lr.fit(X =income2[['Education','Seniority']],y =income2['Income'])
+x=np.array([18,60])
+y=lr.predict(x.reshape(1,2))
+print(y)
+
+#measure Correletion Education vs Seniority to Income
+lr.fit(X =income2[['Education']],y =income2['Income'])
+a=lr.score(X= income2[['Education']],y=income2['Income'])
+
+lr.fit(X =income2[['Seniority']],y =income2['Income'])
+b=lr.score(X= income2[['Seniority']],y=income2['Income'])
+
+print("Education  "+str(a))
+print("Seniority  "+str(b))
+
+#yes the Correlation (of Education) is better or the score os better (close to 1)
